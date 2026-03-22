@@ -167,6 +167,7 @@ macOS 通过[辅助功能 API](https://developer.apple.com/documentation/accessi
 ## Roadmap
 
 - macOS (Accessibility API)
+- Android (Accessibility Service via ADB)
 - Windows (UI Automation)
 - Linux (AT-SPI)
 
