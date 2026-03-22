@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.jpg" width="200" alt="ORAX Eye">
+</p>
+
 # ORAX Eye
 
 **See and control any macOS app through the Accessibility API.**
