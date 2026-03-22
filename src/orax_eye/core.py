@@ -125,11 +125,24 @@ class OraxEye:
     # Permission check
     # ------------------------------------------------------------------
 
-    def check_permission(self) -> bool:
+    def check_permission(self, prompt: bool = False) -> bool:
         """Check if this process has macOS Accessibility permission.
+
+        Args:
+            prompt: If True and permission not granted, automatically show
+                    the macOS system dialog asking user to grant access.
 
         If False, grant access in: System Settings > Privacy & Security > Accessibility
         """
+        if prompt:
+            try:
+                from ApplicationServices import AXIsProcessTrustedWithOptions
+                options = {
+                    "AXTrustedCheckOptionPrompt": True
+                }
+                return bool(AXIsProcessTrustedWithOptions(options))
+            except ImportError:
+                pass
         return bool(AXIsProcessTrusted())
 
     # ------------------------------------------------------------------

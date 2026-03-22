@@ -50,13 +50,21 @@ print('granted' if AXIsProcessTrusted() else 'denied')
 " 2>/dev/null || echo "error")
 
 if [[ "$PERM" == "granted" ]]; then
-    echo -e "${GREEN}Accessibility permission: GRANTED${NC}"
+    echo -e "${GREEN}✅ Accessibility permission: GRANTED${NC}"
 else
-    echo -e "${YELLOW}Accessibility permission: NOT GRANTED${NC}"
+    echo -e "${YELLOW}⚠️  Accessibility permission: NOT GRANTED${NC}"
     echo ""
-    echo "  Grant access in:"
-    echo "  System Settings > Privacy & Security > Accessibility"
-    echo "  Add your terminal app (Terminal, iTerm2, VS Code, Cursor)"
+    # Auto-prompt the system permission dialog
+    $PYTHON -c "
+from ApplicationServices import AXIsProcessTrustedWithOptions
+from CoreFoundation import CFDictionaryCreate, kCFBooleanTrue
+import objc
+# This triggers the macOS permission prompt automatically
+options = {objc.lookUpClass('NSString').stringWithString_('AXTrustedCheckOptionPrompt'): True}
+AXIsProcessTrustedWithOptions(options)
+" 2>/dev/null || true
+    echo "  A system dialog should appear asking you to grant access."
+    echo "  If not, go to: System Settings > Privacy & Security > Accessibility"
     echo ""
     open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility" 2>/dev/null || true
 fi
